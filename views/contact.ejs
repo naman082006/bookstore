@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | The Book Store</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="min-h-screen bg-[#f7f5ef] text-[#24352d]">
+
+    <%- include('includes/nav.ejs') %>
+
+    <section class=" bg-[#244c36] px-3 py-5 text-center text-white">
+        <p class="text-sm uppercase tracking-[4px] text-[#d8bd82]">The Book Store</p>
+        <h1 class="mt-3 text-4xl font-bold sm:text-5xl">
+            Let's Talk About <span class="font-serif italic text-[#d8bd82]">Books.</span>
+        </h1>
+        <p class="mx-auto mt-4 max-w-xl text-white/70">
+            Have a question or need help? We'd love to hear from you.
+        </p>
+    </section>
+
+    <main class="mx-auto grid max-w-5xl gap-8 px-5 py-14 lg:grid-cols-5">
+
+        <div class="rounded-3xl bg-[#315b43] p-8 text-white lg:col-span-2">
+            <div class="text-4xl">📚</div>
+            <h2 class="mt-5 text-2xl font-bold">Get in Touch</h2>
+            <p class="mt-3 text-sm leading-6 text-white/70">
+                Every book has a story. Tell us yours!
+            </p>
+
+            <div class="mt-8 space-y-5 text-sm">
+                <div class="rounded-xl bg-white/10 p-4">✉️ <span class="ml-2">Email Support</span></div>
+                <div class="rounded-xl bg-white/10 p-4">📞 <span class="ml-2">Phone Support</span></div>
+                <div class="rounded-xl bg-white/10 p-4">📍 <span class="ml-2">The Book Store</span></div>
+            </div>
+
+            <p class="mt-8 font-serif italic text-[#d8bd82]">
+                "Every book opens a new world."
+            </p>
+        </div>
+
+        <div class="rounded-3xl bg-white p-6 shadow-xl sm:p-9 lg:col-span-3">
+            <h2 class="text-2xl font-bold">Send us a Message</h2>
+            <p class="mt-2 text-sm text-gray-500">
+                Fill in the details and we'll get back to you.
+            </p>
+
+            <form action="/contact" method="post" class="mt-7 space-y-5">
+
+                <div class="grid gap-5 sm:grid-cols-2">
+                    <input type="text" name="name" placeholder="Your Name" required
+                        class="rounded-xl border border-gray-200 bg-[#fafbf8] px-4 py-3 outline-none focus:border-[#315b43]">
+
+                    <input type="tel" name="mobile" placeholder="Phone Number" required
+                        class="rounded-xl border border-gray-200 bg-[#fafbf8] px-4 py-3 outline-none focus:border-[#315b43]">
+                </div>
+
+                <input type="email" name="email" placeholder="Email Address" required
+                    class="w-full rounded-xl border border-gray-200 bg-[#fafbf8] px-4 py-3 outline-none focus:border-[#315b43]">
+
+                <textarea name="message" rows="5" placeholder="Write your message..." required
+                    class="w-full resize-none rounded-xl border border-gray-200 bg-[#fafbf8] px-4 py-3 outline-none focus:border-[#315b43]"></textarea>
+
+                <button type="submit"
+                    class="w-full rounded-xl bg-[#315b43] px-6 py-3.5 font-semibold text-white hover:bg-[#244832]">
+                    Send Your Message →
+                </button>
+
+            </form>
+        </div>
+
+    </main>
+    <footer class="bg-[#1d3025] py-5 text-center text-sm text-white/60">
+        Read. Learn. Grow. © The Book Store
+    </footer>
+
+</body>
+</html>
+

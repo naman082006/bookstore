@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Add New Book</title>
+</head>
+<body class="min-h-screen bg-[#f7f5ef] text-[#24352d]">
+
+    <%- include('includes/nav.ejs') %>
+
+    <form action="/books" method="post" enctype="multipart/form-data"
+        class="mx-auto mt-10 max-w-lg rounded-2xl bg-white p-8 shadow-lg">
+
+        <h1 class="mb-6 text-center text-2xl font-bold">Add New Book</h1>
+
+        <label class="font-medium">Title</label>
+        <input type="text" name="title" required
+            class="mb-4 mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-[#315b43]">
+
+        <label class="font-medium">Author</label>
+        <input type="text" name="author" required
+            class="mb-4 mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-[#315b43]">
+
+        <label class="font-medium">Price</label>
+        <input type="number" name="price" required
+            class="mb-4 mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-[#315b43]">
+
+        <label class="font-medium">Category</label>
+        <input type="text" name="category" required
+            class="mb-4 mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-[#315b43]">
+
+        <label class="font-medium">Image</label>
+        <input type="file" name="img" 
+            class="mb-6 mt-1 w-full rounded-lg border border-gray-300 p-2">
+
+        <button type="submit"
+            class="w-full rounded-lg bg-[#315b43] py-2.5 font-medium text-white transition hover:bg-[#244832]">
+            Add Book
+        </button>
+
+    </form>
+
+</body>
+</html>

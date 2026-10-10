@@ -1,0 +1,223 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="theme-color" content="#24352d">
+        <title>Checkout | The Book Store</title>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    </head>
+
+    <body class="min-h-screen bg-[#f7f5ef] text-[#24352d]">
+
+        <%- include('includes/nav.ejs') %>
+
+        <main class="mx-auto max-w-7xl px-5 py-10 sm:px-8">
+
+            <section class="mb-9 rounded-2xl bg-[#24352d] px-5 py-10 text-center text-white sm:py-12">
+                <p class="text-sm font-semibold uppercase tracking-[4px] text-[#d8bd82]">
+                    Checkout
+                </p>
+                <h1 class="mt-3 text-4xl font-bold sm:text-5xl">
+                    Delivery Details<span class="text-[#d8bd82]">.</span>
+                </h1>
+                <p class="mt-3 text-sm text-white/70 sm:text-base">
+                    Just a few details and your favourite books will be on their way.
+                </p>
+                <div class="mx-auto mt-5 h-1 w-16 rounded-full bg-[#d8bd82]"></div>
+            </section>
+
+            <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-3">
+
+                <form action="/checkout" method="post"
+                    class="rounded-2xl border border-[#e3e1d7] bg-white p-5 shadow-sm sm:p-8 lg:col-span-2">
+
+                    <p class="text-xs font-bold tracking-[3px] text-[#a1844b]">
+                        DELIVERY DETAILS
+                    </p>
+
+                    <h2 class="mt-2 text-2xl font-bold">
+                        Where should we send your books?
+                    </h2>
+
+                    <p class="mt-2 text-sm text-gray-500">
+                        Please enter the correct details for delivery.
+                    </p>
+
+                    <div class="mt-7 space-y-5">
+
+                        <div>
+                            <label for="name" class="mb-2 block text-sm font-semibold">Full Name</label>
+                            <input
+                                id="name"
+                                name="name"
+                                type="text"
+                                value="<%= currentUser.name %>"
+                                required
+                                minlength="2"
+                                maxlength="100"
+                                autocomplete="name"
+                                placeholder="Enter your full name"
+                                class="w-full rounded-xl border border-[#d8ddd8] bg-[#fcfbf7] px-4 py-3 outline-none transition placeholder:text-gray-400 focus:border-[#315b43] focus:ring-2 focus:ring-[#315b43]/10"
+                            >
+                        </div>
+
+                        <div>
+                            <label for="phone" class="mb-2 block text-sm font-semibold">Phone Number</label>
+                            <input
+                                id="phone"
+                                name="phone"
+                                type="tel"
+                                required
+                                minlength="7"
+                                maxlength="30"
+                                autocomplete="tel"
+                                placeholder="Enter your phone number"
+                                class="w-full rounded-xl border border-[#d8ddd8] bg-[#fcfbf7] px-4 py-3 outline-none transition placeholder:text-gray-400 focus:border-[#315b43] focus:ring-2 focus:ring-[#315b43]/10"
+                            >
+                        </div>
+
+                        <div>
+                            <label for="address" class="mb-2 block text-sm font-semibold">Street Address</label>
+                            <input
+                                id="address"
+                                name="address"
+                                required
+                                maxlength="200"
+                                autocomplete="street-address"
+                                placeholder="House number, street and area"
+                                class="w-full rounded-xl border border-[#d8ddd8] bg-[#fcfbf7] px-4 py-3 outline-none transition placeholder:text-gray-400 focus:border-[#315b43] focus:ring-2 focus:ring-[#315b43]/10"
+                            >
+                        </div>
+
+                        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                            <div>
+                                <label for="city" class="mb-2 block text-sm font-semibold">City</label>
+                                <input
+                                    id="city"
+                                    name="city"
+                                    required
+                                    maxlength="100"
+                                    autocomplete="address-level2"
+                                    placeholder="Enter your city"
+                                    class="w-full rounded-xl border border-[#d8ddd8] bg-[#fcfbf7] px-4 py-3 outline-none transition placeholder:text-gray-400 focus:border-[#315b43] focus:ring-2 focus:ring-[#315b43]/10"
+                                >
+                            </div>
+
+                            <div>
+                                <label for="postalCode" class="mb-2 block text-sm font-semibold">PIN / Postal Code</label>
+                                <input
+                                    id="postalCode"
+                                    name="postalCode"
+                                    required
+                                    maxlength="20"
+                                    autocomplete="postal-code"
+                                    placeholder="Enter postal code"
+                                    class="w-full rounded-xl border border-[#d8ddd8] bg-[#fcfbf7] px-4 py-3 outline-none transition placeholder:text-gray-400 focus:border-[#315b43] focus:ring-2 focus:ring-[#315b43]/10"
+                                >
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-7 flex gap-4 rounded-xl border border-[#dce5d6] bg-[#f0f4ec] p-4">
+                        <span class="text-2xl text-[#315b43]">♡</span>
+                        <div>
+                            <h3 class="font-bold text-[#315b43]">Cash on Delivery</h3>
+                            <p class="mt-1 text-sm leading-6 text-gray-600">
+                                Pay when your books arrive. No online payment needed.
+                            </p>
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                        class="mt-7 flex w-full items-center justify-center gap-2 rounded-xl bg-[#315b43] px-5 py-3.5 font-semibold text-white shadow-sm transition hover:bg-[#24352d] hover:shadow-md">
+                        Place My Order <span>→</span>
+                    </button>
+
+                    <a href="/cart"
+                        class="mt-4 block text-center text-sm font-medium text-[#315b43] transition hover:text-[#78966f]">
+                        ← Back to Your Cart
+                    </a>
+
+                </form>
+
+                <aside class="rounded-2xl border border-[#e3e1d7] bg-white p-6 shadow-sm lg:sticky lg:top-6">
+
+                    <p class="text-xs font-bold tracking-[3px] text-[#a1844b]">
+                        ORDER SUMMARY
+                    </p>
+
+                    <h2 class="mt-2 text-2xl font-bold">Your Items</h2>
+
+                    <div class="my-6 space-y-4">
+                        <% items.forEach(item => { %>
+                            <div class="flex items-start justify-between gap-4 border-b border-dashed border-[#e2e2dc] pb-4">
+                                <div class="min-w-0">
+                                    <h3 class="font-semibold leading-6 text-[#24352d]">
+                                        <%= item.book.title %>
+                                    </h3>
+                                    <p class="mt-1 text-sm text-gray-500">
+                                        Quantity: <%= item.quantity %>
+                                    </p>
+                                </div>
+
+                                <p class="shrink-0 font-semibold text-[#315b43]">
+                                    ₹<%= Number(item.lineTotal).toLocaleString('en-IN') %>
+                                </p>
+                            </div>
+                        <% }) %>
+                    </div>
+
+                    <div class="rounded-xl bg-[#f0f3eb] p-4">
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="font-semibold">Total Due</span>
+                            <strong class="text-2xl text-[#315b43]">
+                                ₹<%= Number(total).toLocaleString('en-IN') %>
+                            </strong>
+                        </div>
+                        <p class="mt-2 text-xs text-gray-500">
+                            Pay this amount when your order arrives.
+                        </p>
+                    </div>
+
+                    <div class="mt-5 flex items-center gap-3 rounded-xl border border-[#eee7d6] bg-[#fcf8ef] p-4">
+                        <span class="text-xl">📦</span>
+                        <p class="text-sm leading-5 text-gray-600">
+                            Your books will be delivered to the address you provide.
+                        </p>
+                    </div>
+
+                    <a href="/cart"
+                        class="mt-5 block text-center text-sm font-semibold text-[#315b43] hover:underline">
+                        ← Back to Your Bag
+                    </a>
+
+                </aside>
+
+            </div>
+        </main>
+
+        <footer class="mt-8 bg-[#1d3025] px-5 py-7 text-center text-sm text-white/60">
+            <a href="/" class="text-lg font-bold text-[#d8bd82]">
+                The Book Store
+            </a>
+            <p class="mt-1">Read. Learn. Grow.</p>
+
+            <div class="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-2">
+                <a href="/books" class="transition hover:text-[#d8bd82]">Books</a>
+                <a href="/categories" class="transition hover:text-[#d8bd82]">Categories</a>
+                <a href="/about" class="transition hover:text-[#d8bd82]">About</a>
+                <a href="/contact" class="transition hover:text-[#d8bd82]">Contact</a>
+            </div>
+            <footer class="bg-[#1d3025] py-5 text-center text-sm text-white/60">
+            Read. Learn. Grow. © The Book Store
+        </footer>
+
+            <!-- <p class="mt-4 text-xs">
+                © <%= new Date().getFullYear() %> The Book Store. All rights reserved.
+            </p> -->
+        </footer>
+
+    </body>
+    </html>

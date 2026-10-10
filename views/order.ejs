@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#24352d">
+    <title>Order Details | The Book Store</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="min-h-screen bg-[#f7f5ef] text-[#24352d] antialiased">
+
+    <%- include('includes/nav.ejs') %>
+
+    <main class="mx-auto max-w-3xl px-5 py-10 sm:py-14">
+
+        <div class="overflow-hidden rounded-3xl border border-[#e5e2d8] bg-white shadow-lg">
+
+            <div class="bg-[#315b43] px-6 py-8 text-white sm:px-10">
+                <div class="flex h-14 w-14 items-center justify-center rounded-full bg-white/15 text-3xl text-[#d8bd82]">
+                    ✓
+                </div>
+
+                <p class="mt-5 text-sm font-semibold uppercase tracking-[0.2em] text-[#d8bd82]">
+                    Order Confirmed
+                </p>
+
+                <h1 class="mt-2 font-serif text-3xl font-bold sm:text-4xl">
+                    Thank you for your order!
+                </h1>
+
+                <p class="mt-3 text-sm text-white/75">
+                    Order #<%= String(order._id).slice(-8).toUpperCase() %>
+                </p>
+
+                <p class="mt-1 text-sm text-white/75">
+                    <%= new Date(order.createdAt).toLocaleString('en-IN') %>
+                </p>
+
+                <span class="mt-5 inline-block rounded-full bg-[#d8bd82] px-4 py-2 text-sm font-semibold text-[#24352d]">
+                    <%= order.status %>
+                </span>
+            </div>
+
+            <div class="p-6 sm:p-10">
+
+                <h2 class="font-serif text-2xl font-bold">Order Items</h2>
+
+                <div class="mt-4 divide-y divide-[#e9e5db]">
+                    <% order.items.forEach(item => { %>
+                        <div class="flex items-center justify-between gap-4 py-4">
+                            <div>
+                                <p class="font-semibold"><%= item.title %></p>
+                                <p class="mt-1 text-sm text-[#68746b]">
+                                    Quantity: <%= item.quantity %>
+                                </p>
+                                <p class="text-sm text-[#68746b]">
+                                    ₹<%= Number(item.price).toLocaleString('en-IN') %> each
+                                </p>
+                            </div>
+
+                            <strong class="whitespace-nowrap text-[#315b43]">
+                                ₹<%= Number(item.price * item.quantity).toLocaleString('en-IN') %>
+                            </strong>
+                        </div>
+                    <% }) %>
+                </div>
+
+                <div class="mt-4 flex items-center justify-between gap-3 rounded-2xl bg-[#f2f4ed] p-5">
+                    <div>
+                        <p class="font-semibold">Total Amount</p>
+                        <p class="mt-1 text-sm text-[#68746b]">Cash on delivery</p>
+                    </div>
+
+                    <strong class="text-xl text-[#315b43]">
+                        ₹<%= Number(order.total).toLocaleString('en-IN') %>
+                    </strong>
+                </div>
+
+                <div class="mt-8 border-t border-[#e9e5db] pt-7">
+                    <h2 class="font-serif text-2xl font-bold">Delivery Details</h2>
+
+                    <div class="mt-4 rounded-2xl border border-[#e5e2d8] bg-[#fcfbf7] p-5">
+                        <p class="font-semibold"><%= order.shipping.name %></p>
+
+                        <p class="mt-2 leading-6 text-[#68746b]">
+                            <%= order.shipping.address %><br>
+                            <%= order.shipping.city %>, <%= order.shipping.postalCode %><br>
+                            Phone: <%= order.shipping.phone %>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+                    <a href="/orders"
+                       class="rounded-xl bg-[#315b43] px-6 py-3 text-center font-semibold text-white transition hover:bg-[#244832]">
+                        View All Orders
+                    </a>
+
+                    <a href="/categories"
+                       class="rounded-xl border border-[#315b43] px-6 py-3 text-center font-semibold text-[#315b43] transition hover:bg-[#f2f4ed]">
+                        Continue Shopping →
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+    <footer class="bg-[#1d3025] py-5 text-center text-sm text-white/60">
+        Read. Learn. Grow. © The Book Store
+    </footer>
+
+</body>
+</html>

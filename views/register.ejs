@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Create account | The Bookshop</title><script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script></head>
+<body class="min-h-screen bg-[#fbf8f2] text-[#25372d]">
+    <%- include('includes/nav.ejs') %>
+    <main class="mx-auto max-w-md px-5 py-14">
+        <form action="/register" method="post" class="rounded-3xl bg-white p-8 shadow-lg">
+            <p class="text-center text-sm font-semibold uppercase tracking-widest text-[#ad7130]">Join our readers</p>
+            <h1 class="mt-2 text-center font-serif text-3xl font-bold">Create your account</h1>
+            <label class="mt-7 block text-sm font-medium">Your name<input type="text" name="name" autocomplete="name" required minlength="2" maxlength="100" class="mt-1 w-full rounded-xl border border-gray-200 px-4 py-3"></label>
+            <label class="mt-4 block text-sm font-medium">Email address<input type="email" name="email" autocomplete="email" required maxlength="254" class="mt-1 w-full rounded-xl border border-gray-200 px-4 py-3"></label>
+            <label class="mt-4 block text-sm font-medium">Password<input type="password" name="password" autocomplete="new-password" required minlength="8" maxlength="128" class="mt-1 w-full rounded-xl border border-gray-200 px-4 py-3"><span class="mt-1 block text-xs text-[#68746b]">Use at least 8 characters.</span></label>
+            <button class="mt-6 w-full rounded-xl bg-[#234735] py-3 font-semibold text-white hover:bg-[#345d46]" type="submit">Create account</button>
+            <p class="mt-5 text-center text-sm text-[#68746b]">Already have an account? <a href="/login" class="font-semibold text-[#234735] underline">Log in</a></p>
+        </form>
+    </main>
+    <footer class="bg-[#1d3025] py-5 text-center text-sm text-white/60">
+        Read. Learn. Grow. © The Book Store
+    </footer>
+</body>
+</html>
