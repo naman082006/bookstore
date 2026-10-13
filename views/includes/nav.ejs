@@ -1,18 +1,290 @@
-<nav class="flex items-center justify-between bg-[#24352d] px-8 py-4 text-white shadow-md">
-    <a href="/" class="text-xl font-bold text-[#d6b56d]">
-        The Book Store
-    </a>
 
-    <div class="flex gap-7">
-        <a href="/" class="hover:text-[#d6b56d]">Home</a>
-        <a href="/books" class="hover:text-[#d6b56d]">Books</a>
-        <a href="/categories" class="hover:text-[#d6b56d]">Categories</a>
-        <a href="/about" class="hover:text-[#d6b56d]">About</a>
-        <a href="/contact" class="hover:text-[#d6b56d]">Contact</a>
-        <a href="/cart" class="hover:text-[#d6b56d]">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-            </svg>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        color-scheme: light;
+        --page: #f7f5ef;
+        --surface: #ffffff;
+        --surface-soft: #eeeee5;
+        --text: #24352d;
+        --muted: #68766a;
+        --green: #315b43;
+        --green-hover: #244832;
+        --gold: #b08b45;
+        --border: #e5dfce;
+        --shadow: 0 10px 30px rgba(36, 53, 45, .07);
+    }
+
+    body.dark-mode {
+        color-scheme: dark;
+        --page: #101812;
+        --surface: #1b2920;
+        --surface-soft: #24352b;
+        --text: #f5f2e9;
+        --muted: #bdc9bd;
+        --green: #d8bd82;
+        --green-hover: #ead5a3;
+        --gold: #e2c783;
+        --border: #35483a;
+        --shadow: 0 12px 32px rgba(0, 0, 0, .22);
+    }
+
+    body {
+        background: var(--page);
+        color: var(--text);
+        font-family: 'DM Sans', sans-serif;
+        transition: background .3s ease, color .3s ease;
+    }
+
+    #mainNav {
+        background: color-mix(in srgb, var(--page) 92%, transparent);
+        color: var(--text);
+        border-color: var(--border);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+    .store-brand {
+        color: var(--text);
+        font-family: 'Playfair Display', serif;
+    }
+
+    .store-tagline {
+        color: var(--gold);
+    }
+
+    .nav-link {
+        color: var(--text);
+        transition: all .2s ease;
+    }
+
+    .nav-link:hover {
+        color: var(--green);
+        background: var(--surface-soft);
+    }
+
+    .theme-button {
+        color: var(--text);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        transition: all .25s ease;
+    }
+
+    .theme-button:hover {
+        transform: translateY(-1px);
+        border-color: var(--gold);
+        box-shadow: var(--shadow);
+    }
+
+    .store-primary {
+        background: var(--green);
+        color: #fff;
+        transition: all .25s ease;
+    }
+
+    body.dark-mode .store-primary {
+        color: #17231a;
+    }
+
+    .store-primary:hover {
+        background: var(--green-hover);
+        transform: translateY(-1px);
+    }
+
+    body.dark-mode .store-primary:hover {
+        color: #17231a;
+    }
+
+    .store-outline {
+        color: var(--text);
+        background: var(--surface);
+        border: 1px solid var(--border);
+    }
+
+    body.dark-mode .store-outline {
+        background: var(--surface);
+        color: var(--text);
+    }
+
+    body.dark-mode .bg-white,
+    body.dark-mode .bg-gray-50,
+    body.dark-mode .bg-gray-100,
+    body.dark-mode .bg-\[\#f7f5ef\] {
+        background-color: var(--surface) !important;
+        color: var(--text) !important;
+    }
+
+    body.dark-mode h1,
+    body.dark-mode h2,
+    body.dark-mode h3,
+    body.dark-mode h4,
+    body.dark-mode p,
+    body.dark-mode label,
+    body.dark-mode li,
+    body.dark-mode td,
+    body.dark-mode th {
+        color: var(--text);
+    }
+
+    body.dark-mode .text-\[\#24352d\],
+    body.dark-mode .text-gray-800,
+    body.dark-mode .text-gray-900,
+    body.dark-mode .text-black {
+        color: var(--text) !important;
+    }
+
+    body.dark-mode .text-gray-500,
+    body.dark-mode .text-gray-600,
+    body.dark-mode .text-gray-700 {
+        color: var(--muted) !important;
+    }
+
+    body.dark-mode input,
+    body.dark-mode textarea,
+    body.dark-mode select {
+        background: var(--surface-soft) !important;
+        color: var(--text) !important;
+        border-color: var(--border) !important;
+    }
+
+    body.dark-mode input::placeholder,
+    body.dark-mode textarea::placeholder {
+        color: var(--muted) !important;
+    }
+
+    body.dark-mode .border-gray-200,
+    body.dark-mode .border-gray-300 {
+        border-color: var(--border) !important;
+    }
+
+    body.dark-mode .shadow,
+    body.dark-mode .shadow-md,
+    body.dark-mode .shadow-lg,
+    body.dark-mode .shadow-xl {
+        box-shadow: var(--shadow);
+    }
+
+    body.dark-mode .text-\[\#9b814b\],
+    body.dark-mode .text-\[\#b08b45\] {
+        color: var(--gold) !important;
+    }
+
+    body.dark-mode .bg-\[\#315b43\],
+    body.dark-mode .bg-\[\#244c36\] {
+        background: var(--green) !important;
+        color: #17231a !important;
+    }
+
+    body.dark-mode .bg-\[\#315b43\] *,
+    body.dark-mode .bg-\[\#244c36\] * {
+        color: #17231a !important;
+    }
+
+    body.dark-mode .bg-\[\#d8bd82\] {
+        background: var(--gold) !important;
+        color: #17231a !important;
+    }
+
+    body.dark-mode .bg-red-500 {
+        background: #b93838 !important;
+        color: #ffffff !important;
+    }
+
+    body.dark-mode img {
+        filter: brightness(.96);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        body, body * {
+            transition: none !important;
+        }
+    }
+</style>
+
+<nav id="mainNav" class="sticky top-0 z-50 border-b shadow-sm">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-4 sm:px-8">
+
+        <a href="/" class="group shrink-0">
+            <span class="store-brand block text-xl font-bold tracking-wide sm:text-2xl">The Book Store</span>
+            <span class="store-tagline mt-0.5 block text-[10px] font-bold uppercase tracking-[3px]">Stories Worth Keeping</span>
         </a>
+
+        <div class="flex flex-wrap items-center gap-1.5 text-sm font-semibold sm:gap-2">
+
+            <a href="/" class="nav-link rounded-xl px-3 py-2">Home</a>
+            <a href="/books" class="nav-link rounded-xl px-3 py-2">Books</a>
+            <a href="/categories" class="nav-link rounded-xl px-3 py-2">Categories</a>
+            <a href="/about" class="nav-link rounded-xl px-3 py-2">About</a>
+            <a href="/contact" class="nav-link rounded-xl px-3 py-2">Contact</a>
+
+            <button id="themeToggle" type="button" class="theme-button rounded-xl px-3 py-2.5 font-bold" onclick="toggleTheme()">
+                🌙 Dark
+            </button>
+
+            <% if (typeof isAdmin !== 'undefined' && isAdmin) { %>
+
+                <a href="/admin/orders" class="store-primary rounded-xl px-4 py-2.5">
+                    📦 Orders
+                </a>
+
+                <a href="/admin/logout" class="rounded-xl bg-red-500 px-4 py-2.5 text-white hover:bg-red-600">
+                    Logout
+                </a>
+
+            <% } else { %>
+
+                <a href="/cart" class="store-primary inline-flex items-center gap-2 rounded-xl px-4 py-2.5">
+                    🛒 Cart
+                    <span class="inline-flex min-w-5 items-center justify-center rounded-full bg-[#d8bd82] px-1.5 py-0.5 text-xs font-bold text-[#24352d]">
+                        <%= typeof cartCount !== 'undefined' ? cartCount : 0 %>
+                    </span>
+                </a>
+
+                <a href="/admin/login" class="store-outline rounded-xl px-4 py-2.5 hover:border-[#b08b45]">
+                    🔐 Admin
+                </a>
+
+            <% } %>
+
+        </div>
     </div>
 </nav>
+
+<script>
+    function applyTheme(theme) {
+        const dark = theme === 'dark';
+
+        document.body.classList.toggle('dark-mode', dark);
+
+        const button = document.getElementById('themeToggle');
+
+        if (button) {
+            button.textContent = dark ? '☀️ Light' : '🌙 Dark';
+            button.setAttribute(
+                'aria-label',
+                dark ? 'Switch to light mode' : 'Switch to dark mode'
+            );
+        }
+
+        localStorage.setItem('bookstore-theme', theme);
+    }
+
+    function toggleTheme() {
+        const dark = document.body.classList.contains('dark-mode');
+        applyTheme(dark ? 'light' : 'dark');
+    }
+
+    (() => {
+        const savedTheme = localStorage.getItem('bookstore-theme') || 'light';
+        document.body.classList.toggle('dark-mode', savedTheme === 'dark');
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => applyTheme(savedTheme));
+        } else {
+            applyTheme(savedTheme);
+        }
+    })();
+</script>

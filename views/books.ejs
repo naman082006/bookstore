@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,118 +6,272 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Books | The Book Store</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            color-scheme: light;
+            --page: #f7f5ef;
+            --card: #ffffff;
+            --soft: #eef3ed;
+            --text: #24352d;
+            --muted: #68766a;
+            --green: #315b43;
+            --green-hover: #244832;
+            --gold: #b08b45;
+            --border: #e4e0d4;
+            --shadow: 0 8px 28px rgba(36,53,45,.07);
+        }
+
+        body.dark-mode {
+            color-scheme: dark;
+            --page: #101812;
+            --card: #1b2920;
+            --soft: #26372b;
+            --text: #f5f2e9;
+            --muted: #bdc9bd;
+            --green: #d8bd82;
+            --green-hover: #ead5a3;
+            --gold: #e2c783;
+            --border: #35483a;
+            --shadow: 0 12px 32px rgba(0,0,0,.24);
+        }
+
+        body {
+            background: var(--page);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            transition: background .3s, color .3s;
+        }
+
+        .page-title {
+            color: var(--text);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .book-card {
+            background: var(--card);
+            color: var(--text);
+            border-color: var(--border);
+            box-shadow: var(--shadow);
+            transition: transform .25s, box-shadow .25s, background .3s;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 18px 38px rgba(36,53,45,.13);
+        }
+
+        body.dark-mode .book-card:hover {
+            box-shadow: 0 18px 38px rgba(0,0,0,.35);
+        }
+
+        .book-image {
+            background: var(--soft);
+        }
+
+        .muted-text {
+            color: var(--muted);
+        }
+
+        .category-pill {
+            background: var(--soft);
+            color: var(--green);
+        }
+
+        .primary-button {
+            background: var(--green);
+            color: #ffffff;
+        }
+
+        body.dark-mode .primary-button {
+            color: #17231a;
+        }
+
+        .primary-button:hover {
+            background: var(--green-hover);
+        }
+
+        body.dark-mode .primary-button:hover {
+            color: #17231a;
+        }
+
+        .section-footer {
+            background: #1d3025;
+            color: #ffffffb3;
+        }
+
+        body.dark-mode .section-footer {
+            background: #080e0a;
+        }
+
+        .add-button {
+            background: #315b43;
+            color: #ffffff;
+        }
+
+        body.dark-mode .add-button {
+            background: #d8bd82;
+            color: #17231a;
+        }
+
+        .theme-button {
+            background: var(--card);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+    </style>
 </head>
 
-<body class="min-h-screen flex flex-col bg-[#f7f5ef] text-[#24352d] antialiased">
+<body class="min-h-screen flex flex-col">
 
     <%- include('includes/nav.ejs') %>
 
-    <h1 class="mt-8 mb-6 text-center font-serif text-3xl font-bold">
-        Our Books
-    </h1>
+    <header class="mx-auto w-full max-w-7xl px-5 pt-12 pb-8 text-center">
+        <p class="mb-3 text-xs font-bold uppercase tracking-[4px]" style="color:var(--gold)">
+            Find Your Next Favourite
+        </p>
+
+        <h1 class="page-title text-4xl font-bold sm:text-5xl">
+            Our Books
+        </h1>
+
+        <p class="muted-text mx-auto mt-4 max-w-xl text-sm leading-7 sm:text-base">
+            Explore stories, discover new ideas and find a book worth keeping.
+        </p>
+
+        <div class="mx-auto mt-6 h-1 w-16 rounded-full" style="background:var(--gold)"></div>
+    </header>
 
     <% if (isAdmin) { %>
-        <div class="mb-6 flex flex-wrap justify-center gap-3">
+        <div class="mb-8 flex flex-wrap justify-center gap-3 px-5">
             <a href="/books/new"
-               class="rounded-lg bg-[#315b43] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#244832]">
+               class="add-button rounded-xl px-6 py-3 text-sm font-bold shadow-md transition hover:-translate-y-0.5 hover:shadow-lg">
                 + Add New Book
-            </a>
-
-            <a href="/admin/logout"
-               class="rounded-lg bg-red-500 px-5 py-2 text-sm font-semibold text-white transition hover:bg-red-600">
-                Logout
             </a>
         </div>
     <% } %>
 
-    <main class="mx-auto w-full max-w-7xl flex-1 px-5 pb-12">
-        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <main class="mx-auto w-full max-w-7xl flex-1 px-5 pb-16 sm:px-8">
 
-            <% books.forEach(book => { %>
+        <% if (books.length === 0) { %>
+            <div class="rounded-2xl border p-12 text-center" style="background:var(--card);border-color:var(--border)">
+                <div class="mb-4 text-5xl">📚</div>
+                <h2 class="page-title text-2xl font-bold">No Books Yet</h2>
+                <p class="muted-text mt-3">New stories will appear here soon.</p>
+            </div>
+        <% } else { %>
 
-                <div class="overflow-hidden rounded-xl border border-[#d9dfd5] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#b9c9b6] hover:shadow-lg">
+            <div class="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 
-                    <% if (book.image) { %>
-                        <img
-                            src="<%= book.image.startsWith('/uploads/') ? book.image : '/uploads/' + book.image %>"
-                            alt="<%= book.title %>"
-                            class="h-40 w-full bg-[#eeece3] object-contain p-3"
-                            loading="lazy">
-                    <% } else { %>
-                        <div class="flex h-40 items-center justify-center bg-[#eef3ed] text-sm text-gray-400">
-                            No Image Available
-                        </div>
-                    <% } %>
+                <% books.forEach(book => { %>
 
-                    <div class="p-4">
+                    <article class="book-card overflow-hidden rounded-2xl border">
 
-                        <h2 class="mb-3 line-clamp-2 text-lg font-bold">
-                            <%= book.title %>
-                        </h2>
+                        <div class="book-image relative flex h-60 items-center justify-center overflow-hidden p-5">
+                            <% if (book.image) { %>
+                                <img
+                                    src="<%= book.image.startsWith('/uploads/') ? book.image : '/uploads/' + book.image %>"
+                                    alt="<%= book.title %>"
+                                    class="h-full w-full object-contain transition duration-500 hover:scale-105"
+                                    loading="lazy">
+                            <% } else { %>
+                                <div class="text-center">
+                                    <div class="mb-3 text-5xl">📖</div>
+                                    <p class="muted-text text-sm">No Image Available</p>
+                                </div>
+                            <% } %>
 
-                        <div class="space-y-2 text-sm">
-
-                            <p>
-                                <span class="text-gray-500">Author:</span>
-                                <span class="font-medium"><%= book.author %></span>
-                            </p>
-
-                            <p>
-                                <span class="text-gray-500">Price:</span>
-                                <span class="font-bold text-[#315b43]">
-                                    ₹<%= book.price %>
-                                </span>
-                            </p>
-
-                            <p>
-                                <span class="text-gray-500">Category:</span>
-                                <span class="ml-1 inline-block rounded-full bg-[#eef3ed] px-2.5 py-1 text-xs font-medium text-[#315b43]">
-                                    <%= book.category %>
-                                </span>
-                            </p>
-
-                            <a
-                                href="https://www.google.com/search?q=<%= encodeURIComponent(book.title) %>"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="mt-4 block w-full rounded-lg bg-[#315b43] py-2 text-center text-sm font-semibold text-white transition hover:bg-[#244832]">
-                                View Book →
-                            </a>
-
+                            <span class="absolute left-4 top-4 rounded-full px-3 py-1 text-xs font-bold"
+                                  style="background:var(--card);color:var(--gold)">
+                                <%= book.category %>
+                            </span>
                         </div>
 
-                        <% if (isAdmin) { %>
-                            <div class="mt-4 flex gap-2">
+                        <div class="p-5">
 
-                                <form action="/books/delete/<%= book._id %>" method="POST"
-                                      onsubmit="return confirm('Are you sure you want to delete this book?')">
-                                    <button type="submit"
-                                            class="rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-600">
-                                        Delete
-                                    </button>
-                                </form>
+                            <h2 class="page-title mb-3 line-clamp-2 text-xl font-bold leading-snug">
+                                <%= book.title %>
+                            </h2>
 
-                                <form action="/books/edit/<%= book._id %>" method="GET">
-                                    <button type="submit"
-                                            class="rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600">
-                                        Edit
-                                    </button>
-                                </form>
+                            <p class="muted-text text-sm">
+                                By <span style="color:var(--text)" class="font-semibold"><%= book.author %></span>
+                            </p>
 
+                            <div class="mt-5 flex items-center justify-between border-t pt-4"
+                                 style="border-color:var(--border)">
+                                <div>
+                                    <p class="muted-text text-xs">Price</p>
+                                    <p class="mt-1 text-xl font-bold" style="color:var(--gold)">
+                                        ₹<%= book.price %>
+                                    </p>
+                                </div>
+
+                                <% if (!isAdmin) { %>
+                                    <span class="text-xs font-medium" style="color:var(--muted)">
+                                        📚 Available
+                                    </span>
+                                <% } %>
                             </div>
-                        <% } %>
 
-                    </div>
-                </div>
+                            <% if (!isAdmin) { %>
+                                <form action="/cart/add/<%= book._id %>" method="POST" class="mt-5">
+                                    <button type="submit"
+                                            class="primary-button w-full rounded-xl py-3 text-sm font-bold transition hover:-translate-y-0.5">
+                                        🛒 Add to Cart
+                                    </button>
+                                </form>
+                            <% } %>
 
-            <% }) %>
+                            <% if (isAdmin) { %>
+                                <div class="mt-5 flex gap-3">
+                                    <form action="/books/delete/<%= book._id %>" method="POST" class="flex-1"
+                                          onsubmit="return confirm('Are you sure you want to delete this book?')">
+                                        <button type="submit"
+                                                class="w-full rounded-xl bg-red-500 px-3 py-2.5 text-sm font-bold text-white transition hover:bg-red-600">
+                                            Delete
+                                        </button>
+                                    </form>
 
-        </div>
+                                    <form action="/books/edit/<%= book._id %>" method="GET" class="flex-1">
+                                        <button type="submit"
+                                                class="w-full rounded-xl bg-blue-600 px-3 py-2.5 text-sm font-bold text-white transition hover:bg-blue-700">
+                                            Edit
+                                        </button>
+                                    </form>
+                                </div>
+                            <% } %>
+
+                        </div>
+                    </article>
+
+                <% }) %>
+
+            </div>
+        <% } %>
     </main>
 
-    <footer class="mt-auto bg-[#1d3025] py-5 text-center text-sm text-white/70">
-        Read. Learn. Grow. © The Book Store
+    <footer class="section-footer mt-auto py-6 text-center text-sm">
+        <p>Read. Learn. Grow.</p>
+        <p class="mt-1 text-xs">© <%= new Date().getFullYear() %> The Book Store</p>
     </footer>
+
+    <script>
+        (() => {
+            const savedTheme = localStorage.getItem('bookstore-theme') || 'light';
+            document.body.classList.toggle('dark-mode', savedTheme === 'dark');
+        })();
+    </script>
 
 </body>
 </html>

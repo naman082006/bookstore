@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Manage Orders | The Book Store</title>
+</head>
+
+<body class="min-h-screen bg-[#f7f5ef] text-[#24352d]">
+
+    <%- include('includes/nav.ejs') %>
+
+    <main class="max-w-6xl mx-auto p-5 md:p-8">
+        <h1 class="text-3xl font-bold mb-2">Customer Orders</h1>
+        <p class="text-gray-500 mb-8">Manage all customer purchases here.</p>
+
+        <% if (!orders.length) { %>
+            <div class="bg-white p-8 rounded-xl shadow-sm text-center">
+                <h2 class="text-xl font-bold">No Orders Yet</h2>
+                <p class="text-gray-500 mt-2">Customer orders will appear here.</p>
+            </div>
+        <% } %>
+
+        <div class="space-y-6">
+            <% orders.forEach(order => { %>
+                <div class="bg-white rounded-2xl shadow-sm p-5 md:p-7">
+
+                    <div class="flex flex-wrap justify-between gap-3 border-b pb-4 mb-4">
+                        <div>
+                            <h2 class="font-bold text-lg">Order Details</h2>
+                            <p class="text-sm text-gray-500 break-all">
+                                ID: <%= order._id %>
+                            </p>
+                            <p class="text-sm text-gray-500">
+                                <%= order.createdAt ? new Date(order.createdAt).toLocaleString() : '' %>
+                            </p>
+                        </div>
+
+                        <div class="text-right">
+                            <p class="text-2xl font-bold text-[#315b43]">
+                                ₹<%= Number(order.total || 0).toFixed(2) %>
+                            </p>
+                            <span class="inline-block mt-2 rounded-full bg-[#f7f5ef] px-3 py-1 text-sm">
+                                <%= order.status || 'Confirmed' %>
+                            </span>
+                        </div>
+                    </div>
+
+                    <h3 class="font-bold mb-2">Customer Information</h3>
+                    <p><b>Name:</b> <%= order.shipping?.name || 'N/A' %></p>
+                    <p><b>Phone:</b> <%= order.shipping?.phone || 'N/A' %></p>
+                    <p><b>Address:</b> <%= order.shipping?.address || 'N/A' %></p>
+                    <p><b>City:</b> <%= order.shipping?.city || 'N/A' %></p>
+                    <p><b>Postal Code:</b> <%= order.shipping?.postalCode || 'N/A' %></p>
+
+                    <h3 class="font-bold mt-6 mb-3">Ordered Books</h3>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="bg-[#f7f5ef]">
+                                    <th class="p-3">Book</th>
+                                    <th class="p-3">Price</th>
+                                    <th class="p-3">Quantity</th>
+                                    <th class="p-3">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% (order.items || []).forEach(item => { %>
+                                    <tr class="border-b border-gray-100">
+                                        <td class="p-3"><%= item.title %></td>
+                                        <td class="p-3">₹<%= Number(item.price || 0).toFixed(2) %></td>
+                                        <td class="p-3"><%= item.quantity %></td>
+                                        <td class="p-3 font-medium">
+                                            ₹<%= (Number(item.price || 0) * Number(item.quantity || 0)).toFixed(2) %>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="flex flex-wrap gap-3 mt-6">
+                        <a href="/admin/orders/<%= order._id %>/edit"
+                           class="rounded-lg bg-[#315b43] px-5 py-3 text-white hover:bg-[#244c36]">
+                            Edit Order
+                        </a>
+
+                        <form action="/admin/orders/<%= order._id %>/delete"
+                              method="POST"
+                              onsubmit="return confirm('Are you sure you want to delete this order?')">
+                            <button type="submit"
+                                    class="rounded-lg bg-red-600 px-5 py-3 text-white hover:bg-red-700">
+                                Delete Order
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            <% }) %>
+        </div>
+    </main>
+
+</body>
+</html>

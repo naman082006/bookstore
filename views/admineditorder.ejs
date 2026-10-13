@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Edit Order | The Book Store</title>
+</head>
+
+<body class="min-h-screen bg-[#f7f5ef] text-[#24352d]">
+
+    <%- include('includes/nav.ejs') %>
+
+    <main class="max-w-5xl mx-auto px-4 py-10">
+
+        <div class="mb-8">
+            <a href="/admin/orders" class="text-sm text-[#315b43] hover:underline">
+                ← Back to All Orders
+            </a>
+            <h1 class="text-3xl font-bold mt-3">Edit Customer Order</h1>
+            <p class="text-gray-500 mt-2">
+                Order ID: <%= order._id %>
+            </p>
+        </div>
+
+        <form action="/admin/orders/<%= order._id %>/edit"
+              method="POST"
+              class="space-y-7">
+
+            <section class="bg-white rounded-2xl shadow-sm p-6 md:p-8">
+                <h2 class="text-xl font-bold mb-5">Customer Details</h2>
+
+                <div class="grid md:grid-cols-2 gap-5">
+
+                    <div>
+                        <label class="block mb-2 font-medium">Customer Name</label>
+                        <input type="text" name="name"
+                               value="<%= order.shipping?.name || '' %>"
+                               required
+                               class="w-full border border-gray-300 rounded-lg p-3 outline-none focus:border-[#315b43]">
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-medium">Phone Number</label>
+                        <input type="text" name="phone"
+                               value="<%= order.shipping?.phone || '' %>"
+                               required
+                               class="w-full border border-gray-300 rounded-lg p-3 outline-none focus:border-[#315b43]">
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-medium">Address</label>
+                        <input type="text" name="address"
+                               value="<%= order.shipping?.address || '' %>"
+                               required
+                               class="w-full border border-gray-300 rounded-lg p-3 outline-none focus:border-[#315b43]">
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-medium">City</label>
+                        <input type="text" name="city"
+                               value="<%= order.shipping?.city || '' %>"
+                               required
+                               class="w-full border border-gray-300 rounded-lg p-3 outline-none focus:border-[#315b43]">
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-medium">Postal Code</label>
+                        <input type="text" name="postalCode"
+                               value="<%= order.shipping?.postalCode || '' %>"
+                               required
+                               class="w-full border border-gray-300 rounded-lg p-3 outline-none focus:border-[#315b43]">
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-medium">Order Status</label>
+                        <select name="status" required
+                                class="w-full border border-gray-300 rounded-lg p-3 bg-white outline-none focus:border-[#315b43]">
+                            <% orderStatuses.forEach(status => { %>
+                                <option value="<%= status %>"
+                                    <%= order.status === status ? 'selected' : '' %>>
+                                    <%= status %>
+                                </option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="bg-white rounded-2xl shadow-sm p-6 md:p-8">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+                    <h2 class="text-xl font-bold">Order Items</h2>
+                    <button type="button" onclick="addItem()"
+                            class="bg-[#315b43] text-white px-4 py-2 rounded-lg hover:bg-[#244c36]">
+                        + Add Book
+                    </button>
+                </div>
+
+                <div id="itemsContainer" class="space-y-4">
+                    <% order.items.forEach((item, index) => { %>
+                        <div class="item-row grid md:grid-cols-12 gap-3 border border-gray-200 rounded-xl p-4">
+
+                            <input type="hidden" name="bookId"
+                                   value="<%= item.bookId || '' %>">
+
+                            <div class="md:col-span-5">
+                                <label class="block text-sm mb-2">Book Title</label>
+                                <input type="text" name="title"
+                                       value="<%= item.title || '' %>"
+                                       required
+                                       class="item-title w-full border border-gray-300 rounded-lg p-3">
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label class="block text-sm mb-2">Price (₹)</label>
+                                <input type="number" name="price"
+                                       value="<%= item.price %>"
+                                       min="0" step="0.01" required
+                                       oninput="calculateTotal()"
+                                       class="item-price w-full border border-gray-300 rounded-lg p-3">
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label class="block text-sm mb-2">Quantity</label>
+                                <input type="number" name="quantity"
+                                       value="<%= item.quantity %>"
+                                       min="1" max="99" step="1" required
+                                       oninput="calculateTotal()"
+                                       class="item-quantity w-full border border-gray-300 rounded-lg p-3">
+                            </div>
+
+                            <div class="md:col-span-3 flex items-end">
+                                <button type="button" onclick="removeItem(this)"
+                                        class="w-full bg-red-50 text-red-600 rounded-lg p-3 hover:bg-red-100">
+                                    Remove Book
+                                </button>
+                            </div>
+
+                        </div>
+                    <% }) %>
+                </div>
+
+                <div class="mt-6 border-t pt-5 flex justify-between items-center">
+                    <span class="text-lg font-bold">Updated Total</span>
+                    <span id="totalAmount" class="text-2xl font-bold text-[#315b43]">
+                        ₹<%= Number(order.total || 0).toFixed(2) %>
+                    </span>
+                </div>
+
+                <p class="text-sm text-gray-500 mt-2">
+                    Total bill is recalculated automatically from price × quantity.
+                </p>
+            </section>
+
+            <div class="flex flex-wrap gap-3">
+                <button type="submit"
+                        class="bg-[#315b43] text-white px-7 py-3 rounded-lg font-semibold hover:bg-[#244c36]">
+                    Save Order Changes
+                </button>
+
+                <a href="/admin/orders"
+                   class="border border-gray-300 px-7 py-3 rounded-lg hover:bg-white">
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+    </main>
+
+    <script>
+        function calculateTotal() {
+            let total = 0;
+
+            document.querySelectorAll('.item-row').forEach(row => {
+                const price = Number(row.querySelector('.item-price').value) || 0;
+                const quantity = Number(row.querySelector('.item-quantity').value) || 0;
+
+                total += price * quantity;
+            });
+
+            document.getElementById('totalAmount').textContent =
+                '₹' + total.toFixed(2);
+        }
+
+        function addItem() {
+            const container = document.getElementById('itemsContainer');
+            const row = document.createElement('div');
+
+            row.className = 'item-row grid md:grid-cols-12 gap-3 border border-gray-200 rounded-xl p-4';
+
+            row.innerHTML = `
+                <input type="hidden" name="bookId" value="">
+
+                <div class="md:col-span-5">
+                    <label class="block text-sm mb-2">Book Title</label>
+                    <input type="text" name="title" required
+                           class="w-full border border-gray-300 rounded-lg p-3">
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm mb-2">Price (₹)</label>
+                    <input type="number" name="price" min="0" step="0.01"
+                           value="0" required oninput="calculateTotal()"
+                           class="item-price w-full border border-gray-300 rounded-lg p-3">
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm mb-2">Quantity</label>
+                    <input type="number" name="quantity" min="1" max="99"
+                           value="1" required oninput="calculateTotal()"
+                           class="item-quantity w-full border border-gray-300 rounded-lg p-3">
+                </div>
+
+                <div class="md:col-span-3 flex items-end">
+                    <button type="button" onclick="removeItem(this)"
+                            class="w-full bg-red-50 text-red-600 rounded-lg p-3 hover:bg-red-100">
+                        Remove Book
+                    </button>
+                </div>
+            `;
+
+            container.appendChild(row);
+            calculateTotal();
+        }
+
+        function removeItem(button) {
+            const rows = document.querySelectorAll('.item-row');
+
+            if (rows.length <= 1) {
+                alert('An order must contain at least one book.');
+                return;
+            }
+
+            button.closest('.item-row').remove();
+            calculateTotal();
+        }
+
+        calculateTotal();
+    </script>
+
+</body>
+</html>

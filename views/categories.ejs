@@ -4,87 +4,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categories</title>
+    <title>Categories | The Book Store</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            color-scheme: light;
+            --page: #f7f5ef;
+            --card: #ffffff;
+            --soft: #eef3ed;
+            --text: #24352d;
+            --muted: #68766a;
+            --green: #315b43;
+            --green-hover: #244832;
+            --gold: #b08b45;
+            --border: #e4e0d4;
+            --shadow: 0 8px 28px rgba(36,53,45,.07);
+        }
+
+        body.dark-mode {
+            color-scheme: dark;
+            --page: #101812;
+            --card: #1b2920;
+            --soft: #26372b;
+            --text: #f5f2e9;
+            --muted: #bdc9bd;
+            --green: #d8bd82;
+            --green-hover: #ead5a3;
+            --gold: #e2c783;
+            --border: #35483a;
+            --shadow: 0 12px 32px rgba(0,0,0,.24);
+        }
+
+        body {
+            background: var(--page);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            transition: background .3s, color .3s;
+        }
+
+        .page-title {
+            color: var(--text);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        .category-card {
+            background: var(--card);
+            color: var(--text);
+            border-color: var(--border);
+            box-shadow: var(--shadow);
+            transition: transform .25s, box-shadow .25s, background .3s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 18px 38px rgba(36,53,45,.13);
+        }
+
+        body.dark-mode .category-card:hover {
+            box-shadow: 0 18px 38px rgba(0,0,0,.35);
+        }
+
+        .book-image {
+            background: var(--soft);
+        }
+
+        .category-pill {
+            background: var(--soft);
+            color: var(--green);
+        }
+
+        .filter-pill {
+            background: var(--card);
+            color: var(--text);
+            border: 1px solid var(--border);
+            transition: all .2s ease;
+        }
+
+        .filter-pill:hover {
+            border-color: var(--gold);
+            transform: translateY(-1px);
+        }
+
+        .filter-active {
+            background: var(--green);
+            color: #ffffff;
+            border-color: var(--green);
+        }
+
+        body.dark-mode .filter-active {
+            color: #17231a;
+        }
+
+        .primary-button {
+            background: var(--green);
+            color: #ffffff;
+        }
+
+        body.dark-mode .primary-button {
+            color: #17231a;
+        }
+
+        .primary-button:hover {
+            background: var(--green-hover);
+        }
+
+        body.dark-mode .primary-button:hover {
+            color: #17231a;
+        }
+
+        .category-footer {
+            background: #1d3025;
+            color: #ffffffb3;
+        }
+
+        body.dark-mode .category-footer {
+            background: #080e0a;
+        }
+
+        .category-gradient {
+            background: linear-gradient(90deg, #315b43, #78966f, #d0ad6f);
+        }
+
+        body.dark-mode .category-gradient {
+            background: linear-gradient(90deg, #d8bd82, #879f79, #e2c783);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+    </style>
 </head>
-<body class="min-h-screen bg-[#f7f5ef] text-gray-800">
+
+<body class="min-h-screen flex flex-col">
+
     <%- include('includes/nav.ejs') %>
 
-    <div class="mx-auto max-w-7xl px-5 py-8">
-        <div class="mb-8 text-center">
-            <h1 class="text-4xl font-bold text-[#24352d] md:text-5xl">
-                Book Categories
-            </h1>
-            <p class="mt-2 text-gray-500">
-                Explore books from different categories
-            </p>
-        </div>
+    <header class="mx-auto w-full max-w-7xl px-5 pt-12 pb-8 text-center">
+        <p class="mb-3 text-xs font-bold uppercase tracking-[4px]" style="color:var(--gold)">
+            Find Your Next Read
+        </p>
+
+        <h1 class="page-title text-4xl font-bold md:text-5xl">
+            Book Categories
+        </h1>
+
+        <p class="muted mt-4 text-sm sm:text-base">
+            Explore new ideas, discover stories and find your next favourite book.
+        </p>
+
+        <div class="mx-auto mt-6 h-1 w-16 rounded-full" style="background:var(--gold)"></div>
+    </header>
+
+    <main class="mx-auto w-full max-w-7xl flex-1 px-5 pb-14 sm:px-8">
 
         <div class="mb-9 flex flex-wrap justify-center gap-3">
-            <a href="/categories" class="rounded-full bg-[#315b43] px-5 py-2 font-medium text-white transition hover:bg-[#244832]">
-                All
+
+            <a href="/categories"
+               class="filter-pill filter-active rounded-full px-5 py-2.5 text-sm font-bold shadow-sm">
+                All Books
             </a>
 
             <% categories.forEach(category => { %>
                 <a href="/categories/<%= encodeURIComponent(category) %>"
-                    class="rounded-full border border-[#d8ddd8] bg-white px-5 py-2 font-medium text-gray-700 transition hover:border-[#315b43] hover:bg-[#315b43] hover:text-white">
+                   class="filter-pill rounded-full px-5 py-2.5 text-sm font-semibold">
                     <%= category %>
                 </a>
             <% }) %>
+
         </div>
 
-        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            <% books.forEach(book => { %>
-                <div class="overflow-hidden rounded-2xl border border-[#e2e2dc] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+        <% if (books.length === 0) { %>
 
-                    <% if (book.image) { %>
-                        <img
-                            src="<%= book.image.startsWith('/uploads/') ? book.image : '/uploads/' + book.image %>"
-                            alt="<%= book.title %>"
-                           class="h-64 w-full bg-white object-contain px-3 py-4"
-                            loading="lazy"
-                        >
-                    <% } else { %>
-                        <div class="flex h-64 items-center justify-center bg-[#eef3ed] text-gray-400">
-                            No Image Available
+            <div class="rounded-2xl border p-12 text-center"
+                 style="background:var(--card);border-color:var(--border)">
+                <div class="mb-4 text-5xl">📚</div>
+                <h2 class="page-title text-2xl font-bold">No Books Found</h2>
+                <p class="muted mt-3">Try selecting another category.</p>
+                <a href="/categories"
+                   class="primary-button mt-6 inline-block rounded-xl px-6 py-3 text-sm font-bold">
+                    View All Books
+                </a>
+            </div>
+
+        <% } else { %>
+
+            <div class="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+                <% books.forEach(book => { %>
+
+                    <article class="category-card overflow-hidden rounded-2xl border">
+
+                        <div class="book-image relative flex h-64 items-center justify-center overflow-hidden p-5">
+                            <% if (book.image) { %>
+                                <img
+                                    src="<%= book.image.startsWith('/uploads/') ? book.image : '/uploads/' + book.image %>"
+                                    alt="<%= book.title %>"
+                                    class="h-full w-full object-contain transition duration-500 hover:scale-105"
+                                    loading="lazy">
+                            <% } else { %>
+                                <div class="text-center">
+                                    <div class="mb-3 text-5xl">📖</div>
+                                    <p class="muted text-sm">No Image Available</p>
+                                </div>
+                            <% } %>
                         </div>
-                    <% } %>
 
-                    <div class="h-1 bg-gradient-to-r from-[#315b43] via-[#78966f] to-[#d0ad6f]"></div>
+                        <div class="category-gradient h-1"></div>
 
-                    <div class="p-4">
-                        <h2 class="mb-2 text-lg font-bold text-[#24352d]">
-                            <%= book.title %>
-                        </h2>
+                        <div class="p-5">
 
-                        <p class="text-xs text-gray-400">Author</p>
-                        <p class="mb-2 text-sm font-medium text-gray-700">
-                            <%= book.author %>
-                        </p>
+                            <span class="category-pill mb-3 inline-block rounded-full px-3 py-1 text-xs font-bold">
+                                <%= book.category %>
+                            </span>
 
-                        <p class="text-xs text-gray-400">Price</p>
-                        <p class="mb-2 text-lg font-bold text-[#315b43]">
-                            ₹<%= book.price %>
-                        </p>
+                            <h2 class="page-title mb-3 line-clamp-2 text-xl font-bold leading-snug">
+                                <%= book.title %>
+                            </h2>
 
-                        <p class="text-xs text-gray-400">Category</p>
-                        <span class="mt-1 inline-block rounded-full bg-[#eef3ed] px-3 py-1 text-xs font-medium text-[#315b43]">
-                            <%= book.category %>
-                        </span>
+                            <p class="muted text-xs">AUTHOR</p>
+                            <p class="mt-1 text-sm font-semibold">
+                                <%= book.author %>
+                            </p>
 
-                        <form action="/cart/add/<%= book._id %>" method="POST" class="mt-3">
-                            <button type="submit" class="w-full rounded-xl bg-[#315b43] py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#244832] hover:shadow-md">
-                                🛒 Add to Cart
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            <% }) %>
-        </div>
-    </div>
+                            <div class="mt-5 flex items-end justify-between border-t pt-4"
+                                 style="border-color:var(--border)">
+                                <div>
+                                    <p class="muted text-xs">Price</p>
+                                    <p class="mt-1 text-2xl font-bold" style="color:var(--gold)">
+                                        ₹<%= book.price %>
+                                    </p>
+                                </div>
 
-    <footer class="mt-8 bg-[#1d3025] py-5 text-center text-sm text-white/60">
-        Read. Learn. Grow. © The Book Store
+                                <span class="muted pb-1 text-xs">📚 Book</span>
+                            </div>
+
+                            <% if (!isAdmin) { %>
+                                <form action="/cart/add/<%= book._id %>" method="POST" class="mt-5">
+                                    <button type="submit"
+                                            class="primary-button w-full rounded-xl py-3 text-sm font-bold transition hover:-translate-y-0.5">
+                                        🛒 Add to Cart
+                                    </button>
+                                </form>
+                            <% } else { %>
+                                <div class="mt-5 flex gap-3">
+                                    <a href="/books/edit/<%= book._id %>"
+                                       class="flex-1 rounded-xl bg-blue-600 py-2.5 text-center text-sm font-bold text-white transition hover:bg-blue-700">
+                                        Edit
+                                    </a>
+
+                                    <form action="/books/delete/<%= book._id %>" method="POST" class="flex-1"
+                                          onsubmit="return confirm('Delete this book?')">
+                                        <button type="submit"
+                                                class="w-full rounded-xl bg-red-500 py-2.5 text-sm font-bold text-white transition hover:bg-red-600">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            <% } %>
+
+                        </div>
+                    </article>
+
+                <% }) %>
+
+            </div>
+        <% } %>
+
+    </main>
+
+    <footer class="category-footer mt-auto py-6 text-center text-sm">
+        <p>Read. Learn. Grow.</p>
+        <p class="mt-1 text-xs">© <%= new Date().getFullYear() %> The Book Store</p>
     </footer>
+
+    <script>
+        (() => {
+            const savedTheme = localStorage.getItem('bookstore-theme') || 'light';
+            document.body.classList.toggle('dark-mode', savedTheme === 'dark');
+        })();
+    </script>
+
 </body>
 </html>
